@@ -1,6 +1,6 @@
 # FAF setup tool
 
-- checking in repositories
+- checking out repositories
 - installing npm dependencies
 - initializing grunt 
 
