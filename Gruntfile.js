@@ -26,14 +26,8 @@ module.exports = function(grunt) {
         }
     }
 
-    grunt.initConfig({
-        clean: {
-            "bundles": ["js-sdk"]
-        }
-    });
 
     grunt.registerTask('setup', 'Setup faf', [
-        "clean",
         "load-settings",
         "svn_export",
         "shell"
