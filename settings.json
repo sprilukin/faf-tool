@@ -1,0 +1,27 @@
+{
+  "svn-server": "falcon.jaspersoft.com",
+
+  "faf-target": "trunk",
+  "jrs-ce-target": "trunk",
+  "jrs-pro-target": "trunk",
+
+
+  "modules": [
+    "bi-adhoc",
+    "bi-charts",
+    "bi-control",
+    "bi-dashboard",
+    "bi-report",
+    "bi-repository",
+
+    "js-sdk",
+    "visualize-js",
+    "jrs-ui",
+    "jrs-ui-pro",
+
+    "jasperserver",
+    "jasperserver-pro"
+  ]
+
+
+}

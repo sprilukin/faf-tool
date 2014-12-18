@@ -1,2 +1,7 @@
-node_modules
-.idea
+*
+
+!.gitignore
+!Gruntfile.js
+!package.js
+!settings.json
+!Readme.md
