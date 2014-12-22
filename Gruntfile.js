@@ -33,6 +33,11 @@ module.exports = function(grunt) {
         "shell"
     ]);
 
+    grunt.registerTask('init', 'Setup faf', [
+        "load-settings",
+        "shell"
+    ]);
+
 
     grunt.registerTask('load-settings', 'Load settings and create config', function(){
         var svn_config = {};
