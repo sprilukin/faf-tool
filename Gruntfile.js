@@ -1,7 +1,14 @@
 module.exports = function(grunt) {
+    var settings;
 
     require('load-grunt-tasks')(grunt);
-    var settings = grunt.file.readJSON('settings.json');
+
+    try {
+        settings = grunt.file.readJSON('settings.json');
+    } catch (e) {
+        grunt.fatal("Can't read settings.json, use settings.json.example to create settings.json");
+    }
+
 
     function getRepoPath (module, type) {
         return [
