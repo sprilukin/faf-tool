@@ -63,7 +63,7 @@ module.exports = function(grunt) {
         settings["modules"].forEach(function(module) {
             if (module.search("jasperserver") !== -1) return;
             shell_config[module] = {
-                command: "npm install && grunt init",
+                command: "npm install && npm prune && grunt init",
                 options: {
                     execOptions: {
                         cwd: "./" + module
