@@ -1,7 +1,7 @@
 # FAF setup tool
 
 - checking out repositories
-- installing npm dependencies
+- installing npm dependencies and clean npm_modules from garbage
 - initializing grunt 
 
 
@@ -18,13 +18,13 @@ grunt setup
 
 ### Commands
 #### setup
-Checkout, npm install and grunt init
+Checkout, npm install (and prune) and grunt init
 ```
 grunt setup
 ```
 
 #### init
-Npm install and grunt init
+Npm install (and prune) and grunt init
 ```
 grunt init
 ```
