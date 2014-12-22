@@ -16,6 +16,19 @@ npm install
 grunt setup
 ```
 
+### Commands
+#### setup
+Checkout, npm install and grunt init
+```
+grunt setup
+```
+
+#### init
+Npm install and grunt init
+```
+grunt init
+```
+
 ### settings.json
 Remove unnecessary modules, set branch names for faf, ce and pro
 ```
