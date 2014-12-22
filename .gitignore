@@ -3,5 +3,5 @@
 !.gitignore
 !Gruntfile.js
 !package.js
-!settings.json
+!settings.json.example
 !Readme.md
