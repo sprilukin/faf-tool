@@ -2,6 +2,7 @@ module.exports = function(grunt) {
     var settings;
 
     require('load-grunt-tasks')(grunt);
+    require('time-grunt')(grunt);
 
     try {
         settings = grunt.file.readJSON('settings.json');

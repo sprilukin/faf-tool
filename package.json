@@ -14,6 +14,7 @@
       "grunt-svn-export": "~0.1.7",
       "load-grunt-tasks": "~0.6.0",
       "underscore": "~1.6.0",
+      "time-grunt": "~0.3.2",
       "grunt-shell": "~1.1.1"
   }
 }

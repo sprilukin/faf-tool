@@ -2,7 +2,7 @@
 
 - checking out repositories
 - installing npm dependencies and clean npm_modules from garbage
-- initializing grunt 
+- initializing grunt
 
 
 ### How to use
