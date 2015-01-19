@@ -4,7 +4,7 @@
   "description": "Tool for maintain FAF JRS",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zigfred/faf-tool.git"
+    "url": "https://github.com/Jaspersoft/faf-tool.git"
   },
   "author": "zigfred",
   "devDependencies": {
