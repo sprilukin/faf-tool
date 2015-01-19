@@ -91,40 +91,39 @@ module.exports = function(grunt) {
         if (!settings.overlayVersion) {
             return false;
         }
-        var file;
+        var fileContent, filePath;
 
         grunt.log.subhead("Update overlay versions");
 
         if (settings.modules.hasOwnProperty("jrs-ui")) {
             grunt.log.writeln("Update jrs-ui overlay version");
-            file = grunt.file.readJSON("jrs-ui/package.json");
-            file.overlayVersion = settings.overlayVersion;
-            grunt.file.write("jrs-ui/package.json", JSON.stringify(file, null, " "));
+            fileContent = grunt.file.readJSON("jrs-ui/package.json");
+            fileContent.overlayVersion = settings.overlayVersion;
+            grunt.file.write("jrs-ui/package.json", JSON.stringify(fileContent, null, " "));
         }
 
         if (settings.modules.hasOwnProperty("jrs-ui-pro")) {
             grunt.log.writeln("Update jrs-ui-pro overlay version");
-            file = grunt.file.readJSON("jrs-ui-pro/package.json");
-            file.overlayVersion = settings.overlayVersion;
-            grunt.file.write("jrs-ui-pro/package.json", JSON.stringify(file, null, " "));
+            fileContent = grunt.file.readJSON("jrs-ui-pro/package.json");
+            fileContent.overlayVersion = settings.overlayVersion;
+            grunt.file.write("jrs-ui-pro/package.json", JSON.stringify(fileContent, null, " "));
         }
 
-        if (settings["jasperserver-branch"]) {
-            grunt.log.writeln("Update jasperserver overlay version");
-            file = grunt.file.read("jasperserver/pom.xml"); // this is jasperserver/jasperserver-war/pom.xml file!
-            file = file.replace(/(jrs-ui<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + settings.overlayVersion + "$2");
-            grunt.file.write("jasperserver/pom.xml", file);
-        }
-        if (settings["jasperserver-pro-branch"]) {
-            grunt.log.writeln("Update jasperserver-pro overlay version");
-            file = grunt.file.read("jasperserver-pro/pom.xml"); // this is jasperserver-pro/jasperserver-war/pom.xml file!
-            file = file.replace(/(jrs-ui-pro<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + settings.overlayVersion + "$2");
-            grunt.file.write("jasperserver-pro/pom.xml", file);
+        if (settings["jasperserver-branch"] || settings["jasperserver-path"]) {
+            filePath = (settings["jasperserver-path"] || "jasperserver") + "/jasperserver-war/pom.xml";
+            fileContent = grunt.file.read(filePath); // this is jasperserver/jasperserver-war/pom.xml file!
+            fileContent = fileContent.replace(/(jrs-ui<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + settings.overlayVersion + "$2");
+            grunt.file.write(filePath, fileContent);
         }
 
+        if (settings["jasperserver-pro-branch"] || settings["jasperserver-pro-path"]) {
+            filePath = (settings["jasperserver-pro-path"] || "jasperserver-pro") + "/jasperserver-war/pom.xml";
+            fileContent = grunt.file.read(filePath); // this is jasperserver-pro/jasperserver-war/pom.xml file!
+            fileContent = fileContent.replace(/(jrs-ui-pro<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + settings.overlayVersion + "$2");
+            grunt.file.write(filePath, fileContent);
+        }
 
     });
-
 
     grunt.registerTask('checkin-settings', 'Checking in updated settings files to repos.', function() {
         var tasks = [],
@@ -134,12 +133,14 @@ module.exports = function(grunt) {
             tasks.push(async.apply(checkinSettings, null, module));
         });
 
+        // disable commits for JRS
+        /*
         if (settings["jasperserver-branch"]) {
             tasks.push(async.apply(checkinSettings, true, "jasperserver"));
         }
         if (settings["jasperserver-pro-branch"]) {
             tasks.push(async.apply(checkinSettings, true, "jasperserver-pro"));
-        }
+        }*/
 
         async.series(tasks, done);
     });
@@ -243,20 +244,34 @@ module.exports = function(grunt) {
     function checkoutSettingsFilesJrs(callback) {
         execSvn([
             "checkout",
-            getRepoPath("jasperserver", "branches/" + settings["jasperserver-branch"] + "/jasperserver-war"),
+            getRepoPath("jasperserver", "branches/" + settings["jasperserver-branch"]),
             "jasperserver",
             "--depth",
-            "files"
-        ], callback);
+            "immediates"
+        ], function() {
+            execSvn([
+                "up",
+                "jasperserver/jasperserver-war",
+                "--set-depth",
+                "files"
+            ], callback);
+        });
     }
     function checkoutSettingsFilesJrsPro(callback) {
         execSvn([
             "checkout",
-            getRepoPath("jasperserver-pro", "branches/" + settings["jasperserver-pro-branch"] + "/jasperserver-war"),
+            getRepoPath("jasperserver-pro", "branches/" + settings["jasperserver-pro-branch"]),
             "jasperserver-pro",
             "--depth",
-            "files"
-        ], callback);
+            "immediates"
+        ], function() {
+            execSvn([
+                "up",
+                "jasperserver-pro/jasperserver-war",
+                "--set-depth",
+                "files"
+            ], callback);
+        });
     }
 
     function checkinSettings(jrs, module, callback) {

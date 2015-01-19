@@ -7,8 +7,12 @@
   "feature-name": "test-feature-name",
   "branch-name": "release-name-feature-name",
 
-  "jasperserver-branch": "test-release-name-ce-test-feature-name",
-  "jasperserver-pro-branch": "test-release-name-pro-test-feature-name",
+  "jasperserver-branch": "<existed jrs ce branch name>",
+  "jasperserver-pro-branch": "<existed jrs pro branch name>",
+
+  "jasperserver-path": "<path to local jrs>",
+  "jasperserver-pro-path": "<path to local jrs-pro>",
+
 
   "modules": [
     "bi-adhoc",
@@ -22,10 +26,6 @@
     "visualize-js",
     "jrs-ui",
     "jrs-ui-pro",
-
-    "jasperserver",
-    "jasperserver-pro"
   ]
-
 
 }

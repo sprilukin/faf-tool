@@ -52,14 +52,19 @@ Remove unnecessary modules, set branch names for faf, ce and pro
   "overlayVersion": "test-release-name-tests-feature-name-SNAPSHOT",
 
     // branch name parts
-  "release-cycle": "test-release-name",
-  "feature-name": "test-feature-name",
+  "release-cycle": "<release name>",
+  "feature-name": "<feature name>",
   // or full branch name. This will override release-cycle and release-name options. Optional
-  "branch-name": "release-name-feature-name",
+  "branch-name": "<specific feature name>",
 
-    // optional path to JRS. Used for update faf overlays version in jasperserver-war/pom.xml
-  "jasperserver-branch": "test-release-name-ce-test-feature-name",
-  "jasperserver-pro-branch": "test-release-name-pro-test-feature-name",
+    // optional JRS branch used for checkout and update faf overlays version in jasperserver-war/pom.xml
+  "jasperserver-branch": "<existed jrs ce branch name>",
+  "jasperserver-pro-branch": "<existed jrs pro branch name>",
+
+    // optional JRS location (if already checked out) - used to update faf overlays version in jasperserver-war/pom.xml (requires manual commit)
+  "jasperserver-path": "<path to local jrs>",
+  "jasperserver-pro-path": "<path to local jrs-pro>",
+  
 
   "modules": [
     "bi-charts",
