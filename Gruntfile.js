@@ -11,6 +11,10 @@ module.exports = function(grunt) {
         grunt.fatal("Can't read settings.json, use settings.json.example to create settings.json");
     }
 
+    grunt.initConfig({
+        clean: settings.modules.concat(["jasperserver", "jasperserver-pro"])
+    });
+
 
     // Public tasks
 
@@ -20,7 +24,8 @@ module.exports = function(grunt) {
         "checkout-settings-files",
         "resolve-deps",
         "update-overlay-versions",
-        "checkin-settings"
+        "checkin-settings",
+        "clean"
     ]);
 
     // This task for developers
