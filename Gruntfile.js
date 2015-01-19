@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
-    var settings;
+    var settings,
+        async = require("async");
 
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
@@ -11,60 +12,164 @@ module.exports = function(grunt) {
     }
 
 
-    function getRepoPath (module, type) {
-        return [
-            "svn+ssh:/",
-            settings["svn-server"],
-            module,
-            getBranchPath(type)
-        ].join("/");
-    }
-    function getBranchPath(type) {
-        if (!type) {
-            return defineBranchName(settings["faf-target"]);
-        } else {
-            return defineBranchName(settings["jrs-" + type + "-target"]);
-        }
-    }
-    function defineBranchName(branch) {
-        if (!branch || branch === "trunk") {
-            return "trunk";
-        } else {
-            return "branches/" + branch;
-        }
-    }
+    // Public tasks
 
-
-    grunt.registerTask('setup', 'Setup faf', [
-        "load-settings",
-        "svn_export",
+    // This task only for buildomatic usage
+    grunt.registerTask('create-feature', 'Create new feature branches and setup it.', [
+        "create-branches",
+        "checkout-settings-files",
         "resolve-deps",
-        "shell"
+        "update-overlay-versions",
+        "checkin-settings"
     ]);
 
-    grunt.registerTask('init', 'Setup faf', [
-        "load-settings",
-        "resolve-deps",
-        "shell"
+    // This task for developers
+    grunt.registerTask('setup', 'Checkout feature branches and setup FAF.', [
+        "checkout-full",
+        "init"
+    ]);
+
+    grunt.registerTask('default', 'Default task.', [
+
     ]);
 
 
-    grunt.registerTask('load-settings', 'Load settings and create config', function(){
-        var svn_config = {};
+    // Private tasks
+
+    grunt.registerTask('create-branches', 'Creates svn branches for modules.', function() {
+        var tasks = [],
+            done = this.async();
+
         settings["modules"].forEach(function(module) {
-            var type = module === "jasperserver" ? "ce" : module === "jasperserver-pro" ? "pro" : null;
-            svn_config[module] = {
-                options: {
-                    repository: getRepoPath(module, type),
-                    output: module
-                }
-            };
+            tasks.push(async.apply(createBranch, module));
         });
-        grunt.config.set("svn_export", svn_config);
+
+        async.series(tasks, done);
+    });
+
+    grunt.registerTask('checkout-settings-files', 'Checkout bower.json and package.json for modules for updating it.', function() {
+        var tasks = [],
+            done = this.async();
+
+        settings["modules"].forEach(function(module) {
+            tasks.push(async.apply(checkoutSettingsFiles, module));
+        });
+        if (settings["jasperserver-branch"]) {
+            tasks.push(async.apply(checkoutSettingsFilesJrs));
+        }
+        if (settings["jasperserver-pro-branch"]) {
+            tasks.push(async.apply(checkoutSettingsFilesJrsPro));
+        }
+
+        async.series(tasks, done);
+    });
+
+    grunt.registerTask('resolve-deps', 'Resolve bower dependencies.', function() {
+        settings["modules"].forEach(function(module) {
+            var bowerConfPath = module + "/bower.json",
+                branchName = getBranchName();
+
+            grunt.log.subhead("Resolve bower dependencies for " + module + ": ");
+
+            var bowerConfig = grunt.file.readJSON(bowerConfPath);
+            bowerConfig.resolutions = bowerConfig.resolutions || {};
+
+            for (var depName in bowerConfig.dependencies) {
+                if (!bowerConfig.dependencies.hasOwnProperty(depName)) continue;
+                if (settings["modules"].indexOf(depName) !== -1) {
+                    bowerConfig.dependencies[depName] = bowerConfig.dependencies[depName].replace(/#(.+)$/, "#" + branchName);
+                    bowerConfig.resolutions[depName] = branchName;
+                    grunt.log.writeln(depName + "#" + branchName);
+                }
+            }
+
+            grunt.file.write(bowerConfPath, JSON.stringify(bowerConfig, null, " "));
+        });
+    });
+
+    grunt.registerTask('update-overlay-versions', 'Update overlay versions in jrs-ui, jrs-ui-pro and in JRS poms.', function() {
+        if (!settings.overlayVersion) {
+            return false;
+        }
+        var file;
+
+        grunt.log.subhead("Update overlay versions");
+
+        if (settings.modules.hasOwnProperty("jrs-ui")) {
+            grunt.log.writeln("Update jrs-ui overlay version");
+            file = grunt.file.readJSON("jrs-ui/package.json");
+            file.overlayVersion = settings.overlayVersion;
+            grunt.file.write("jrs-ui/package.json", JSON.stringify(file, null, " "));
+        }
+
+        if (settings.modules.hasOwnProperty("jrs-ui-pro")) {
+            grunt.log.writeln("Update jrs-ui-pro overlay version");
+            file = grunt.file.readJSON("jrs-ui-pro/package.json");
+            file.overlayVersion = settings.overlayVersion;
+            grunt.file.write("jrs-ui-pro/package.json", JSON.stringify(file, null, " "));
+        }
+
+        if (settings["jasperserver-branch"]) {
+            grunt.log.writeln("Update jasperserver overlay version");
+            file = grunt.file.read("jasperserver/pom.xml"); // this is jasperserver/jasperserver-war/pom.xml file!
+            file = file.replace(/(jrs-ui<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + settings.overlayVersion + "$2");
+            grunt.file.write("jasperserver/pom.xml", file);
+        }
+        if (settings["jasperserver-pro-branch"]) {
+            grunt.log.writeln("Update jasperserver-pro overlay version");
+            file = grunt.file.read("jasperserver-pro/pom.xml"); // this is jasperserver-pro/jasperserver-war/pom.xml file!
+            file = file.replace(/(jrs-ui-pro<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + settings.overlayVersion + "$2");
+            grunt.file.write("jasperserver-pro/pom.xml", file);
+        }
+
+
+    });
+
+
+    grunt.registerTask('checkin-settings', 'Checking in updated settings files to repos.', function() {
+        var tasks = [],
+            done = this.async();
+
+        settings["modules"].forEach(function(module) {
+            tasks.push(async.apply(checkinSettings, null, module));
+        });
+
+        if (settings["jasperserver-branch"]) {
+            tasks.push(async.apply(checkinSettings, true, "jasperserver"));
+        }
+        if (settings["jasperserver-pro-branch"]) {
+            tasks.push(async.apply(checkinSettings, true, "jasperserver-pro"));
+        }
+
+        async.series(tasks, done);
+    });
+
+    grunt.registerTask('init', 'Setup FAF. Install npm modules, init grunt.', [
+        "load-init-settings",
+        "shell"
+    ]);
+
+    grunt.registerTask('checkout-full', 'Checkout full selected repos', function() {
+        var tasks = [],
+            done = this.async();
+
+        settings["modules"].forEach(function(module) {
+            tasks.push(async.apply(checkoutFull, module));
+        });
+
+        if (settings["jasperserver-branch"]) {
+            tasks.push(async.apply(checkoutFull, "jasperserver"));
+        }
+        if (settings["jasperserver-pro-branch"]) {
+            tasks.push(async.apply(checkoutFull, "jasperserver-pro"));
+        }
+        async.series(tasks, done);
+    });
+
+    grunt.registerTask('load-init-settings', 'Load settings and create config for initialization commands.', function(){
 
         var shell_config = {};
         settings["modules"].forEach(function(module) {
-            if (module.search("jasperserver") !== -1) return;
             shell_config[module] = {
                 command: "npm install && npm prune && grunt init",
                 options: {
@@ -81,32 +186,98 @@ module.exports = function(grunt) {
     });
 
 
-    grunt.registerTask('resolve-deps', 'Resolve bower dependencies', function() {
-        settings["modules"].forEach(function(module) {
-            if (module.search("jasperserver") !== -1) return;
-            var bowerConfPath = module + "/bower.json";
+    function getSettingsBranchPath(module) {
+        if (module === "jasperserver") {
+            return getRepoPath(module, "branches/" + settings["jasperserver-branch"]);
+        }
+        if (module === "jasperserver-pro") {
+            return getRepoPath(module, "branches/" + settings["jasperserver-pro-branch"]);
+        }
+        return getRepoPath(module, "branches/" + getBranchName());
+    }
+    function getTrunkBranchPath(module) {
+        return getRepoPath(module, "trunk");
+    }
 
-            grunt.log.subhead("Resolve bower dependencies for " + module + ": ");
+    function getRepoPath(module, path) {
+        return [
+            "svn+ssh:/",
+            settings["svn-server"],
+            module,
+            path
+        ].join("/");
+    }
 
-            var bowerConfig = grunt.file.readJSON(bowerConfPath);
-            bowerConfig.resolutions = bowerConfig.resolutions || {};
+    function getBranchName() {
+        return settings["branch-name"] || settings["release-cycle"] + "-" + settings["feature-name"];
+    }
 
-            for (var depName in bowerConfig.dependencies) {
-                if (!bowerConfig.dependencies.hasOwnProperty(depName)) continue;
-                if (settings["modules"].indexOf(depName) !== -1) {
-                    bowerConfig.dependencies[depName] = bowerConfig.dependencies[depName].replace(/#(.+)$/, "#" + settings["faf-target"]);
-                    bowerConfig.resolutions[depName] = settings["faf-target"];
-                    grunt.log.writeln(depName + "#" + settings["faf-target"]);
-                }
-            }
+    function createBranch(module, callback) {
+        execSvn([
+            "copy",
+            getTrunkBranchPath(module),
+            getSettingsBranchPath(module),
+            "-m",
+            "Created a feature branch from Jenkins with name: " + getBranchName()
+        ], callback);
+    }
 
-            grunt.file.write(bowerConfPath, JSON.stringify(bowerConfig, null, " "));
+    function checkoutFull(module, callback) {
+        execSvn([
+            "checkout",
+            getSettingsBranchPath(module),
+            module
+        ], callback);
+    }
+
+    function checkoutSettingsFiles(module, callback) {
+        execSvn([
+            "checkout",
+            getSettingsBranchPath(module),
+            module,
+            "--depth",
+            "files"
+        ], callback);
+    }
+
+    function checkoutSettingsFilesJrs(callback) {
+        execSvn([
+            "checkout",
+            getRepoPath("jasperserver", "branches/" + settings["jasperserver-branch"] + "/jasperserver-war"),
+            "jasperserver",
+            "--depth",
+            "files"
+        ], callback);
+    }
+    function checkoutSettingsFilesJrsPro(callback) {
+        execSvn([
+            "checkout",
+            getRepoPath("jasperserver-pro", "branches/" + settings["jasperserver-pro-branch"] + "/jasperserver-war"),
+            "jasperserver-pro",
+            "--depth",
+            "files"
+        ], callback);
+    }
+
+    function checkinSettings(jrs, module, callback) {
+        execSvn([
+            "commit",
+            module,
+            "-m",
+            jrs ? "Resolved bower dependencies and updated overlay version" : "Updated overlay version"
+        ], callback);
+    }
+
+
+    function execSvn(args, callback) {
+        grunt.util.spawn({
+            cmd: "svn",
+            args: args
+        }, function(error, result, code) {
+            if (error) grunt.log.error(error);
+            grunt.log.writeln(result);
+            callback(error, result);
         });
-
-
-    });
-
-    grunt.registerTask('default', 'Default tasks', [
-        "check-config"
-    ]);
+    }
 };
+

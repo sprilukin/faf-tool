@@ -1,10 +1,14 @@
 {
   "svn-server": "falcon.jaspersoft.com",
 
-  "faf-target": "trunk",
-  "jrs-ce-target": "trunk",
-  "jrs-pro-target": "trunk",
+  "overlayVersion": "test-release-name-tests-feature-name-SNAPSHOT",
 
+  "release-cycle": "test-release-name",
+  "feature-name": "test-feature-name",
+  "branch-name": "release-name-feature-name",
+
+  "jasperserver-branch": "test-release-name-ce-test-feature-name",
+  "jasperserver-pro-branch": "test-release-name-pro-test-feature-name",
 
   "modules": [
     "bi-adhoc",

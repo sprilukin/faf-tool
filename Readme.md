@@ -1,9 +1,16 @@
 # FAF setup tool
 
-- checking out repositories
-- resolve bower dependencies and save it in bower.json config file
-- installing npm dependencies and clean npm_modules from garbage
-- initializing grunt
+- Create feature branches and do preparation routine work.
+    - create feature branches
+    - checkout bower.json, package.json
+    - update bower dependencies and overlay versions
+    - commit changes
+- Checkout and setup all FAF and JRS feature repositories by one command
+    - checkout full repositories for selected modules
+    - run commands:
+        - npm install
+        - npm prune
+        - grunt init
 
 
 ### How to use
@@ -14,65 +21,73 @@ npm install
 
 // edit settings.json now!!
 
+// create new feature branches and setup it
+grunt create-feature
+
+// or just checkout necessary branches and init it
 grunt setup
 ```
 
 ### Commands
-#### setup
-Checkout, resolve bower dependencies, npm install (and prune) and grunt init
+#### create-feature
+
 ```
-grunt setup
+"create-branches", // create new branches from trunk for all modules specified in settings.json
+"checkout-settings-files", // checkout branches
+"resolve-deps", // resolve bower dependencies in bower.json
+"update-overlay-versions", // update overlay versions in jrs-ui, jrs-ui-pro and JRS poms
+"checkin-settings" // commit resolved dependencies
 ```
 
-#### init
-Resolve bower dependencies, npm install (and prune) and grunt init
-```
-grunt init
-```
+#### setup
+Checkout selected modules and init it
+
 
 ### settings.json
 Remove unnecessary modules, set branch names for faf, ce and pro
 ```
-"faf-target": "amber2-tests-jsdoc-metrix",
-"jrs-ce-target": "trunk",
-"jrs-pro-target": "trunk",
+{
+  "svn-server": "falcon.jaspersoft.com",
 
-"modules" : [
+  "overlayVersion": "test-release-name-tests-feature-name-SNAPSHOT",
+
+    // branch name parts
+  "release-cycle": "test-release-name",
+  "feature-name": "test-feature-name",
+  // or full branch name. This will override release-cycle and release-name options. Optional
+  "branch-name": "release-name-feature-name",
+
+    // optional path to JRS. Used for update faf overlays version in jasperserver-war/pom.xml
+  "jasperserver-branch": "test-release-name-ce-test-feature-name",
+  "jasperserver-pro-branch": "test-release-name-pro-test-feature-name",
+
+  "modules": [
+    "bi-charts",
+    "bi-dashboard",
+    "bi-report",
+    "bi-repository",
+    "js-sdk",
+    "visualize-js",
     "jrs-ui",
-    "jrs-ui-pro",
-    "js-sdk"
-]
+    "jrs-ui-pro"
+  ]
+
+}
 ```
 
 ### sample output
 
 ```
-λ grunt setup
-Running "load-settings" task
->> Settings loaded
-
-Running "svn_export:bi-report" (svn_export) task
-Exporting from svn+ssh://falcon.jaspersoft.com/bi-report/branches/amber2-tests-jsdoc-metrix
-A    bi-report
-A    bi-report\README
+λ grunt create-feature
+Running "create-branches" task
 
 ...
-
-
 Done, without errors.
 
 
-Execution Time (2015-01-16 08:40:45 UTC)
-svn_export:bi-report         9.6s  ■■ 1%
-svn_export:js-sdk           13.6s  ■■■ 2%
-svn_export:visualize-js     10.5s  ■■ 2%
-svn_export:jrs-ui           16.9s  ■■■ 3%
-svn_export:jrs-ui-pro       13.7s  ■■■ 2%
-shell:bi-report           2m 5.2s  ■■■■■■■■■■■■■■■■■■■■ 19%
-shell:js-sdk             1m 37.8s  ■■■■■■■■■■■■■■■■ 14%
-shell:visualize-js        2m 1.5s  ■■■■■■■■■■■■■■■■■■■ 18%
-shell:jrs-ui              2m 6.7s  ■■■■■■■■■■■■■■■■■■■■ 19%
-shell:jrs-ui-pro         2m 19.4s  ■■■■■■■■■■■■■■■■■■■■■■ 21%
-Total 11m 14.9s
-
+Execution Time (2015-01-19 14:13:05 UTC)
+create-branches           9.8s  ■■■■■■■■■■■■ 18%
+checkout-settings-files  39.8s  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 72%
+checkin-settings            6s  ■■■■■■■■ 11%
+Total 55.7s
 ```
