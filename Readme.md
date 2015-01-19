@@ -4,7 +4,7 @@
     - create feature branches
     - checkout bower.json, package.json
     - update bower dependencies and overlay versions
-    - commit changes
+    - commit changes (faf modules only)
 - Checkout and setup all FAF and JRS feature repositories by one command
     - checkout full repositories for selected modules
     - run commands:
@@ -36,7 +36,8 @@ grunt setup
 "checkout-settings-files", // checkout branches
 "resolve-deps", // resolve bower dependencies in bower.json
 "update-overlay-versions", // update overlay versions in jrs-ui, jrs-ui-pro and JRS poms
-"checkin-settings" // commit resolved dependencies
+"checkin-settings", // commit resolved dependencies
+"clean" // clean all local repo folders after finish
 ```
 
 #### setup
