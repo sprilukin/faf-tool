@@ -191,16 +191,16 @@ module.exports = function(grunt) {
             done = this.async();
 
         settings["modules"].forEach(function(module) {
-            grunt.log.writeln("Checking in module: " + module);
+            grunt.log.writeln("Checkout module: " + module);
             tasks.push(async.apply(checkoutFull, module));
         });
 
         if (settings["jasperserver-branch"]) {
-            grunt.log.writeln("Checking in module: jasperserver");
+            grunt.log.writeln("Checkout module: jasperserver");
             tasks.push(async.apply(checkoutFull, "jasperserver"));
         }
         if (settings["jasperserver-pro-branch"]) {
-            grunt.log.writeln("Checking in module: jasperserver-pro");
+            grunt.log.writeln("Checkout module: jasperserver-pro");
             tasks.push(async.apply(checkoutFull, "jasperserver-pro"));
         }
 
