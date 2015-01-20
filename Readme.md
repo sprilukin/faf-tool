@@ -100,7 +100,8 @@ checkin-settings            6s  ■■■■■■■■ 11%
 Total 55.7s
 ```
 
-`--dry-run` option:
+#### `--dry-run` option:
+
 ```
 λ grunt create-feature --dry-run
 Running "create-branches" task
