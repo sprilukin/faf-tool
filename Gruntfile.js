@@ -12,7 +12,12 @@ module.exports = function(grunt) {
     }
 
     grunt.initConfig({
-        clean: settings.modules.concat(["jasperserver", "jasperserver-pro"])
+        clean: settings.modules.concat(["jasperserver", "jasperserver-pro"]),
+        shell: {
+            mock: {
+                command: ""
+            }
+        }
     });
 
 
@@ -46,10 +51,15 @@ module.exports = function(grunt) {
             done = this.async();
 
         settings["modules"].forEach(function(module) {
+            grunt.log.writeln("Create svn branch for " + module);
             tasks.push(async.apply(createBranch, module));
         });
 
-        async.series(tasks, done);
+        if (grunt.option("dry-run")) {
+            done();
+        } else {
+            async.series(tasks, done);
+        }
     });
 
     grunt.registerTask('checkout-settings-files', 'Checkout bower.json and package.json for modules for updating it.', function() {
@@ -57,16 +67,23 @@ module.exports = function(grunt) {
             done = this.async();
 
         settings["modules"].forEach(function(module) {
+            grunt.log.writeln("Checkout required files for " + module);
             tasks.push(async.apply(checkoutSettingsFiles, module));
         });
         if (settings["jasperserver-branch"]) {
+            grunt.log.writeln("Checkout required files for jasperserver");
             tasks.push(async.apply(checkoutSettingsFilesJrs));
         }
         if (settings["jasperserver-pro-branch"]) {
+            grunt.log.writeln("Checkout required files for jasperserver-pro");
             tasks.push(async.apply(checkoutSettingsFilesJrsPro));
         }
 
-        async.series(tasks, done);
+        if (grunt.option("dry-run")) {
+            done();
+        } else {
+            async.series(tasks, done);
+        }
     });
 
     grunt.registerTask('resolve-deps', 'Resolve bower dependencies.', function() {
@@ -75,6 +92,10 @@ module.exports = function(grunt) {
                 branchName = getBranchName();
 
             grunt.log.subhead("Resolve bower dependencies for " + module + ": ");
+
+            if (grunt.option("dry-run")) {
+                return;
+            }
 
             var bowerConfig = grunt.file.readJSON(bowerConfPath);
             bowerConfig.resolutions = bowerConfig.resolutions || {};
@@ -94,11 +115,16 @@ module.exports = function(grunt) {
 
     grunt.registerTask('update-overlay-versions', 'Update overlay versions in jrs-ui, jrs-ui-pro and in JRS poms.', function() {
         if (!settings.overlayVersion) {
+            grunt.log.writeln("Overlay settings not set, skipped.");
             return false;
         }
         var fileContent, filePath;
 
         grunt.log.subhead("Update overlay versions");
+
+        if (grunt.option("dry-run")) {
+            return;
+        }
 
         if (settings.modules.hasOwnProperty("jrs-ui")) {
             grunt.log.writeln("Update jrs-ui overlay version");
@@ -135,6 +161,7 @@ module.exports = function(grunt) {
             done = this.async();
 
         settings["modules"].forEach(function(module) {
+            grunt.log.writeln("Checking in updated settings files for " + module);
             tasks.push(async.apply(checkinSettings, null, module));
         });
 
@@ -147,7 +174,11 @@ module.exports = function(grunt) {
             tasks.push(async.apply(checkinSettings, true, "jasperserver-pro"));
         }*/
 
-        async.series(tasks, done);
+        if (grunt.option("dry-run")) {
+            done();
+        } else {
+            async.series(tasks, done);
+        }
     });
 
     grunt.registerTask('init', 'Setup FAF. Install npm modules, init grunt.', [
@@ -160,19 +191,29 @@ module.exports = function(grunt) {
             done = this.async();
 
         settings["modules"].forEach(function(module) {
+            grunt.log.writeln("Checking in module: " + module);
             tasks.push(async.apply(checkoutFull, module));
         });
 
         if (settings["jasperserver-branch"]) {
+            grunt.log.writeln("Checking in module: jasperserver");
             tasks.push(async.apply(checkoutFull, "jasperserver"));
         }
         if (settings["jasperserver-pro-branch"]) {
+            grunt.log.writeln("Checking in module: jasperserver-pro");
             tasks.push(async.apply(checkoutFull, "jasperserver-pro"));
         }
-        async.series(tasks, done);
+
+        if (grunt.option("dry-run")) {
+            done();
+        } else {
+            async.series(tasks, done);
+        }
     });
 
     grunt.registerTask('load-init-settings', 'Load settings and create config for initialization commands.', function(){
+
+        grunt.log.writeln("Load settings and create config for initialization commands.");
 
         var shell_config = {};
         settings["modules"].forEach(function(module) {
@@ -186,9 +227,13 @@ module.exports = function(grunt) {
             };
         });
 
-        grunt.config.set("shell", shell_config);
-
         grunt.log.ok("Settings loaded");
+
+        if (grunt.option("dry-run")) {
+            grunt.log.writeln(JSON.stringify(shell_config, null, 2));
+        } else {
+            grunt.config.set("shell", shell_config);
+        }
     });
 
 
