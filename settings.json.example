@@ -1,7 +1,7 @@
 {
   "svn-server": "falcon.jaspersoft.com",
 
-  "overlayVersion": "test-release-name-tests-feature-name-SNAPSHOT",
+  "overlayVersion": "tests-feature-name",
 
   "release-cycle": "test-release-name",
   "feature-name": "test-feature-name",

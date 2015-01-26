@@ -63,7 +63,7 @@ Remove unnecessary modules, set branch names for faf, ce and pro
 {
   "svn-server": "falcon.jaspersoft.com",
 
-  "overlayVersion": "test-release-name-tests-feature-name-SNAPSHOT",
+  "overlayVersion": "tests-feature-name",
 
     // branch name parts
   "release-cycle": "<release name>",

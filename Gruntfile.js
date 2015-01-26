@@ -128,14 +128,14 @@ module.exports = function(grunt) {
         if (settings.modules.hasOwnProperty("jrs-ui")) {
             grunt.verbose.writeln("Update jrs-ui overlay version");
             fileContent = grunt.file.readJSON("jrs-ui/package.json");
-            fileContent.overlayVersion = settings.overlayVersion;
+            fileContent.overlayVersion = fileContent.version + "-" + settings.overlayVersion + "-SNAPSHOT";
             grunt.file.write("jrs-ui/package.json", JSON.stringify(fileContent, null, " "));
         }
 
         if (settings.modules.hasOwnProperty("jrs-ui-pro")) {
             grunt.verbose.writeln("Update jrs-ui-pro overlay version");
             fileContent = grunt.file.readJSON("jrs-ui-pro/package.json");
-            fileContent.overlayVersion = settings.overlayVersion;
+            fileContent.overlayVersion = fileContent.version + "-" + settings.overlayVersion + "-SNAPSHOT";
             grunt.file.write("jrs-ui-pro/package.json", JSON.stringify(fileContent, null, " "));
         }
 
