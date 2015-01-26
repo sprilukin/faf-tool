@@ -128,6 +128,14 @@ module.exports = function(grunt) {
             settings["jrs-ui-overlayVersion"] = fileContent.overlayVersion = ceOverlayVersion;
             grunt.file.write("jrs-ui/package.json", JSON.stringify(fileContent, null, " "));
             grunt.file.write("settings.json", JSON.stringify(settings, null, " "));
+
+            if (settings["jasperserver-branch"] || settings["jasperserver-path"]) {
+                grunt.verbose.writeln("Update jrs-ui overlay version in jasperserver");
+                filePath = (settings["jasperserver-path"] || "jasperserver") + "/jasperserver-war/pom.xml";
+                fileContent = grunt.file.read(filePath); // this is jasperserver/jasperserver-war/pom.xml file!
+                fileContent = fileContent.replace(/(jrs-ui<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + ceOverlayVersion + "$2");
+                grunt.file.write(filePath, fileContent);
+            }
         }
 
         if (settings.modules.indexOf("jrs-ui-pro") !== -1) {
@@ -137,23 +145,17 @@ module.exports = function(grunt) {
             settings["jrs-ui-pro-overlayVersion"] = fileContent.overlayVersion = proOverlayVersion;
             grunt.file.write("jrs-ui-pro/package.json", JSON.stringify(fileContent, null, " "));
             grunt.file.write("settings.json", JSON.stringify(settings, null, " "));
+
+            if (settings["jasperserver-pro-branch"] || settings["jasperserver-pro-path"]) {
+                grunt.verbose.writeln("Update jrs-ui-pro overlay version in jasperserver-pro");
+                filePath = (settings["jasperserver-pro-path"] || "jasperserver-pro") + "/jasperserver-war/pom.xml";
+                fileContent = grunt.file.read(filePath); // this is jasperserver-pro/jasperserver-war/pom.xml file!
+                fileContent = fileContent.replace(/(jrs-ui-pro<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + proOverlayVersion + "$2");
+                grunt.file.write(filePath, fileContent);
+            }
         }
 
-        if (settings["jasperserver-branch"] || settings["jasperserver-path"]) {
-            grunt.verbose.writeln("Update jrs-ui overlay version in jasperserver");
-            filePath = (settings["jasperserver-path"] || "jasperserver") + "/jasperserver-war/pom.xml";
-            fileContent = grunt.file.read(filePath); // this is jasperserver/jasperserver-war/pom.xml file!
-            fileContent = fileContent.replace(/(jrs-ui<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + ceOverlayVersion + "$2");
-            grunt.file.write(filePath, fileContent);
-        }
 
-        if (settings["jasperserver-pro-branch"] || settings["jasperserver-pro-path"]) {
-            grunt.verbose.writeln("Update jrs-ui-pro overlay version in jasperserver-pro");
-            filePath = (settings["jasperserver-pro-path"] || "jasperserver-pro") + "/jasperserver-war/pom.xml";
-            fileContent = grunt.file.read(filePath); // this is jasperserver-pro/jasperserver-war/pom.xml file!
-            fileContent = fileContent.replace(/(jrs-ui-pro<\/artifactId>\s+<version>)[^<]+(<\/version>)/, "$1" + proOverlayVersion + "$2");
-            grunt.file.write(filePath, fileContent);
-        }
 
     });
 
