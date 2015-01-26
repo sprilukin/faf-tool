@@ -29,8 +29,7 @@ module.exports = function(grunt) {
         "checkout-settings-files",
         "resolve-deps",
         "update-overlay-versions",
-        "checkin-settings",
-        "clean"
+        "checkin-settings"
     ]);
 
     // This task for developers

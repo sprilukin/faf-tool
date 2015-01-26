@@ -51,7 +51,6 @@ grunt create-feature --verbose true --dry-run true
 "resolve-deps", // resolve bower dependencies in bower.json
 "update-overlay-versions", // update overlay versions in jrs-ui, jrs-ui-pro and JRS poms
 "checkin-settings", // commit resolved dependencies
-"clean" // clean all local repo folders after finish
 ```
 
 #### setup
@@ -152,25 +151,6 @@ Checking in updated settings files for visualize-js
 Checking in updated settings files for jrs-ui
 Checking in updated settings files for jrs-ui-pro
 
-Running "clean:0" (clean) task
-
-Running "clean:1" (clean) task
-
-Running "clean:2" (clean) task
-
-Running "clean:3" (clean) task
-
-Running "clean:4" (clean) task
-
-Running "clean:5" (clean) task
-
-Running "clean:6" (clean) task
-
-Running "clean:7" (clean) task
-
-Running "clean:8" (clean) task
-
-Running "clean:9" (clean) task
 
 Done, without errors.
 
@@ -182,16 +162,7 @@ checkout-settings-files  15ms  ■■■■■■■■■■■■■■■■�
 resolve-deps              5ms  ■■■■■■■■■■ 7%
 update-overlay-versions   1ms  ■■ 1%
 checkin-settings         11ms  ■■■■■■■■■■■■■■■■■■■■■■ 15%
-clean:0                   7ms  ■■■■■■■■■■■■■■ 9%
-clean:1                   2ms  ■■■■ 3%
-clean:2                   2ms  ■■■■ 3%
-clean:3                   2ms  ■■■■ 3%
-clean:4                   2ms  ■■■■ 3%
-clean:5                   6ms  ■■■■■■■■■■■■ 8%
-clean:6                   2ms  ■■■■ 3%
-clean:7                   1ms  ■■ 1%
-clean:8                   1ms  ■■ 1%
-clean:9                   2ms  ■■■■ 3%
+
 Total 75ms
 
 ```
