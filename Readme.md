@@ -20,7 +20,7 @@
 ### How to use
 
 ```
-git clone https://github.com/zigfred/faf-tool.git
+git clone https://github.com/Jaspersoft/faf-tool.git
 npm install
 
 // edit settings.json now !!!
