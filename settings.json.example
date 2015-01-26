@@ -3,7 +3,6 @@
 
   "release-cycle": "test-release-name",
   "feature-name": "test-feature-name",
-  "branch-name": "release-name-feature-name",
 
   "jasperserver-branch": "<existed jrs ce branch name>",
   "jasperserver-pro-branch": "<existed jrs pro branch name>",

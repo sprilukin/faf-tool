@@ -66,8 +66,6 @@ Remove unnecessary modules, set branch names for faf, ce and pro
     // branch name parts
   "release-cycle": "<release name>",
   "feature-name": "<feature name>",
-  // or full branch name. This will override release-cycle and release-name options. Optional
-  "branch-name": "<specific feature name>",
 
     // optional JRS branch used for checkout and update faf overlays version in jasperserver-war/pom.xml
   "jasperserver-branch": "<existed jrs ce branch name>",
