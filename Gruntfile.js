@@ -263,7 +263,7 @@ module.exports = function(grunt) {
     }
 
     function getBranchName() {
-        return settings["release-cycle"] + "-" + settings["feature-name"];
+        return (settings["release-cycle"] ? settings["release-cycle"] + "-" : "") + settings["feature-name"];
     }
 
     function createBranch(module, callback) {
