@@ -3,7 +3,7 @@ module.exports = function(grunt) {
         async = require("async");
 
     require('load-grunt-tasks')(grunt);
-    require('time-grunt')(grunt);
+    !grunt.option("no-time") && require('time-grunt')(grunt);
 
     try {
         settings = grunt.file.readJSON('settings.json');
@@ -91,7 +91,7 @@ module.exports = function(grunt) {
             var bowerConfPath = module + "/bower.json",
                 branchName = getBranchName();
 
-            grunt.log.subhead("Resolve bower dependencies for " + module + ": ");
+            grunt.verbose.subhead("Resolve bower dependencies for " + module + ": ");
 
             if (grunt.option("dry-run")) {
                 return;
@@ -105,7 +105,7 @@ module.exports = function(grunt) {
                 if (settings["modules"].indexOf(depName) !== -1) {
                     bowerConfig.dependencies[depName] = bowerConfig.dependencies[depName].replace(/#(.+)$/, "#" + branchName);
                     bowerConfig.resolutions[depName] = branchName;
-                    grunt.log.writeln(depName + "#" + branchName);
+                    grunt.verbose.writeln(depName + "#" + branchName);
                 }
             }
 
@@ -115,26 +115,26 @@ module.exports = function(grunt) {
 
     grunt.registerTask('update-overlay-versions', 'Update overlay versions in jrs-ui, jrs-ui-pro and in JRS poms.', function() {
         if (!settings.overlayVersion) {
-            grunt.log.writeln("Overlay settings not set, skipped.");
+            grunt.verbose.writeln("Overlay settings not set, skipped.");
             return false;
         }
         var fileContent, filePath;
 
-        grunt.log.subhead("Update overlay versions");
+        grunt.verbose.subhead("Update overlay versions");
 
         if (grunt.option("dry-run")) {
             return;
         }
 
         if (settings.modules.hasOwnProperty("jrs-ui")) {
-            grunt.log.writeln("Update jrs-ui overlay version");
+            grunt.verbose.writeln("Update jrs-ui overlay version");
             fileContent = grunt.file.readJSON("jrs-ui/package.json");
             fileContent.overlayVersion = settings.overlayVersion;
             grunt.file.write("jrs-ui/package.json", JSON.stringify(fileContent, null, " "));
         }
 
         if (settings.modules.hasOwnProperty("jrs-ui-pro")) {
-            grunt.log.writeln("Update jrs-ui-pro overlay version");
+            grunt.verbose.writeln("Update jrs-ui-pro overlay version");
             fileContent = grunt.file.readJSON("jrs-ui-pro/package.json");
             fileContent.overlayVersion = settings.overlayVersion;
             grunt.file.write("jrs-ui-pro/package.json", JSON.stringify(fileContent, null, " "));

@@ -12,6 +12,10 @@
         - npm prune
         - grunt init
 
+- Options
+    - `--dry-run`
+    - `--verbose`
+    - `--no-time` - hide time report
 
 ### How to use
 
@@ -31,6 +35,14 @@ grunt setup
 ```
 
 ### Commands
+
+command options can be used in these ways:
+```
+grunt create-feature --dry-run
+grunt create-feature --dry-run true --no-time
+grunt create-feature --verbose true --dry-run true
+```
+
 #### create-feature
 
 ```
@@ -128,25 +140,7 @@ Checkout required files for jasperserver-pro
 
 Running "resolve-deps" task
 
-Resolve bower dependencies for bi-control:
-
-Resolve bower dependencies for bi-dashboard:
-
-Resolve bower dependencies for bi-report:
-
-Resolve bower dependencies for bi-repository:
-
-Resolve bower dependencies for js-sdk:
-
-Resolve bower dependencies for visualize-js:
-
-Resolve bower dependencies for jrs-ui:
-
-Resolve bower dependencies for jrs-ui-pro:
-
 Running "update-overlay-versions" task
-
-Update overlay versions
 
 Running "checkin-settings" task
 Checking in updated settings files for bi-control
@@ -181,13 +175,23 @@ Running "clean:9" (clean) task
 Done, without errors.
 
 
-Execution Time (2015-01-20 12:34:47 UTC)
-loading tasks            10ms  ■■■■■■■■■■■■■■■■■■■ 13%
-create-branches          20ms  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 25%
-checkout-settings-files  10ms  ■■■■■■■■■■■■■■■■■■■ 13%
-checkin-settings         20ms  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 25%
-clean:4                  10ms  ■■■■■■■■■■■■■■■■■■■ 13%
-clean:8                  10ms  ■■■■■■■■■■■■■■■■■■■ 13%
-Total 80ms
+Execution Time (2015-01-26 08:08:49 UTC)
+loading tasks             3ms  ■■■■■■ 4%
+create-branches          13ms  ■■■■■■■■■■■■■■■■■■■■■■■■■■ 17%
+checkout-settings-files  15ms  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 20%
+resolve-deps              5ms  ■■■■■■■■■■ 7%
+update-overlay-versions   1ms  ■■ 1%
+checkin-settings         11ms  ■■■■■■■■■■■■■■■■■■■■■■ 15%
+clean:0                   7ms  ■■■■■■■■■■■■■■ 9%
+clean:1                   2ms  ■■■■ 3%
+clean:2                   2ms  ■■■■ 3%
+clean:3                   2ms  ■■■■ 3%
+clean:4                   2ms  ■■■■ 3%
+clean:5                   6ms  ■■■■■■■■■■■■ 8%
+clean:6                   2ms  ■■■■ 3%
+clean:7                   1ms  ■■ 1%
+clean:8                   1ms  ■■ 1%
+clean:9                   2ms  ■■■■ 3%
+Total 75ms
 
 ```
