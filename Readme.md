@@ -64,7 +64,7 @@ Remove unnecessary modules, set branch names for faf, ce and pro
   "svn-server": "falcon.jaspersoft.com",
 
     // branch name parts
-  "release-cycle": "<release name>",
+  "release-cycle": "<release name>", // optional parameter for features without release cycle like bugfix
   "feature-name": "<feature name>",
 
     // optional JRS branch used for checkout and update faf overlays version in jasperserver-war/pom.xml
