@@ -113,10 +113,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('update-overlay-versions', 'Update overlay versions in jrs-ui, jrs-ui-pro and in JRS poms.', function() {
-        if (!settings.overlayVersion) {
-            grunt.verbose.writeln("Overlay settings not set, skipped.");
-            return false;
-        }
         var fileContent, filePath, ceOverlayVersion, proOverlayVersion;
 
         grunt.verbose.subhead("Update overlay versions");
