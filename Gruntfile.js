@@ -126,8 +126,8 @@ module.exports = function(grunt) {
             fileContent = grunt.file.readJSON("jrs-ui/package.json");
             ceOverlayVersion = fileContent.version + "-" + settings["feature-name"] + "-SNAPSHOT";
             settings["jrs-ui-overlayVersion"] = fileContent.overlayVersion = ceOverlayVersion;
-            grunt.file.write("jrs-ui/package.json", JSON.stringify(fileContent, null, " "));
-            grunt.file.write("settings.json", JSON.stringify(settings, null, " "));
+            grunt.file.write("jrs-ui/package.json", JSON.stringify(fileContent, null, "  "));
+            grunt.file.write("settings.json", JSON.stringify(settings, null, "  "));
 
             if (settings["jasperserver-branch"] || settings["jasperserver-path"]) {
                 grunt.verbose.writeln("Update jrs-ui overlay version in jasperserver");
@@ -143,8 +143,8 @@ module.exports = function(grunt) {
             fileContent = grunt.file.readJSON("jrs-ui-pro/package.json");
             proOverlayVersion = fileContent.version + "-" + settings["feature-name"] + "-SNAPSHOT";
             settings["jrs-ui-pro-overlayVersion"] = fileContent.overlayVersion = proOverlayVersion;
-            grunt.file.write("jrs-ui-pro/package.json", JSON.stringify(fileContent, null, " "));
-            grunt.file.write("settings.json", JSON.stringify(settings, null, " "));
+            grunt.file.write("jrs-ui-pro/package.json", JSON.stringify(fileContent, null, "  "));
+            grunt.file.write("settings.json", JSON.stringify(settings, null, "  "));
 
             if (settings["jasperserver-pro-branch"] || settings["jasperserver-pro-path"]) {
                 grunt.verbose.writeln("Update jrs-ui-pro overlay version in jasperserver-pro");
