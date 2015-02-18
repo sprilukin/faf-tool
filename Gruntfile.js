@@ -254,12 +254,16 @@ module.exports = function(grunt) {
     }
 
     function getRepoPath(module, path) {
-        return [
-            "svn+ssh:/",
-            settings["svn-server"],
-            module,
-            path
-        ].join("/");
+
+        var defaultSchema = "svn+ssh:/",
+            domain = settings["svn-server"],
+            repoPath = [domain, module, path];
+
+          if(domain.indexOf(':/') == -1){
+            repoPath = [defaultSchema].concat(repoPath);
+          }
+
+        return repoPath.join("/");
     }
 
     function getBranchName() {
@@ -348,4 +352,3 @@ module.exports = function(grunt) {
         });
     }
 };
-
