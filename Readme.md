@@ -61,6 +61,7 @@ Checkout selected modules and init it
 Remove unnecessary modules, set branch names for faf, ce and pro
 ```
 {
+    // by default it uses "svn+ssh://" protocol but you can specify protocol in this property like "https://svnserver.jaspersoft.com"
   "svn-server": "falcon.jaspersoft.com",
 
     // branch name parts
