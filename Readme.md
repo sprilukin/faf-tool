@@ -69,8 +69,8 @@ Remove unnecessary modules, set branch names for faf, ce and pro
   "feature-name": "<feature name>",
 
     // optional JRS branch used for checkout and update faf overlays version in jasperserver-war/pom.xml
-  "jasperserver-branch": "<existed jrs ce branch name>",
-  "jasperserver-pro-branch": "<existed jrs pro branch name>",
+  "jasperserver-branch": "<existing jrs ce branch name>",
+  "jasperserver-pro-branch": "<existing jrs pro branch name>",
 
     // optional JRS location (if already checked out) - used to update faf overlays version in jasperserver-war/pom.xml (requires manual commit)
   "jasperserver-path": "<path to local jrs>",
