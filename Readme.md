@@ -13,9 +13,11 @@
         - grunt init
 
 - Options
-    - `--dry-run`
+    - `--dry-run=true`
     - `--verbose`
     - `--no-time` - hide time report
+    - `--username=<username>` - svn username
+    - `--password=<password>` - svn password
 
 ### How to use
 
@@ -39,8 +41,8 @@ grunt setup
 command options can be used in these ways:
 ```
 grunt create-feature --dry-run
-grunt create-feature --dry-run true --no-time
-grunt create-feature --verbose true --dry-run true
+grunt create-feature --dry-run=true --no-time
+grunt create-feature --verbose=true --dry-run=true
 ```
 
 #### create-feature
@@ -75,7 +77,10 @@ Remove unnecessary modules, set branch names for faf, ce and pro
     // optional JRS location (if already checked out) - used to update faf overlays version in jasperserver-war/pom.xml (requires manual commit)
   "jasperserver-path": "<path to local jrs>",
   "jasperserver-pro-path": "<path to local jrs-pro>",
-  
+
+  // optional svn credentials
+  "username": "username",
+  "password":"password",
 
   "modules": [
     "bi-charts",

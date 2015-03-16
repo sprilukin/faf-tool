@@ -11,6 +11,9 @@ module.exports = function(grunt) {
         grunt.fatal("Can't read settings.json, use settings.json.example to create settings.json");
     }
 
+    var username = grunt.option("username") || settings["username"];
+    var password = grunt.option("password") || settings["password"];
+
     grunt.initConfig({
         clean: settings.modules.concat(["jasperserver", "jasperserver-pro"]),
         shell: {
@@ -255,7 +258,7 @@ module.exports = function(grunt) {
 
     function getRepoPath(module, path) {
 
-        var defaultSchema = "svn+ssh:/",
+        var defaultSchema = "https:/",
             domain = settings["svn-server"],
             repoPath = [domain, module, path];
 
@@ -271,13 +274,16 @@ module.exports = function(grunt) {
     }
 
     function createBranch(module, callback) {
-        execSvn([
+        var args = [
             "copy",
             getTrunkBranchPath(module),
             getSettingsBranchPath(module),
             "-m",
             "Created a feature branch from Jenkins with name: " + getBranchName()
-        ], callback);
+        ];
+        username && args.push("--username=" + username);
+        password && args.push("--password=" + password);
+        execSvn(args, callback);
     }
 
     function checkoutFull(module, callback) {
@@ -332,12 +338,15 @@ module.exports = function(grunt) {
     }
 
     function checkinSettings(jrs, module, callback) {
-        execSvn([
+        var args = [
             "commit",
             module,
             "-m",
             jrs ? "Resolved bower dependencies and updated overlay version" : "Updated overlay version"
-        ], callback);
+        ];
+        username && args.push("--username=" + username);
+        password && args.push("--password=" + password);
+        execSvn(args, callback);
     }
 
 
