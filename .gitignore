@@ -1,6 +1,7 @@
 *
 
 !.gitignore
+!.npmignore
 !Gruntfile.js
 !package.js
 !settings.json.example
