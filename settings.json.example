@@ -1,5 +1,5 @@
 {
-  "svn-server": "falcon.jaspersoft.com",
+  "svn-server": "svnserver.jaspersoft.com",
 
   "release-cycle": "test-release-name",
   "feature-name": "test-feature-name",
@@ -22,7 +22,7 @@
     "js-sdk",
     "visualize-js",
     "jrs-ui",
-    "jrs-ui-pro",
+    "jrs-ui-pro"
   ]
 
 }
