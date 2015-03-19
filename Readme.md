@@ -175,16 +175,17 @@ faf-tool supports running it's commands from a command line
 
 - set up
     - check out faf-tool repo
-    - install faf-tool as a global npm package.
+    - install faf-tool as a global npm package:
 
-    - ```
+```
         cd <faf-tool>
-        npm install . faf-tool
-    ```
+        npm install . -g
+```
 
 - usage
     - create settings.json in <project> folder where you want to setup FAF branches
-    - ```
+    - use faf-tool command in <porject> folder:
+```
         cd <project>
-        ./faf-tool setup
-    ```
+        ./faf-tool setup [options]
+```
