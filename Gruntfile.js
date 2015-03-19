@@ -1,12 +1,13 @@
 module.exports = function(grunt) {
     var settings,
-        async = require("async");
+        async = require("async"),
+        cwd = grunt.option("cwd") || ".";
 
     require('load-grunt-tasks')(grunt);
     !grunt.option("no-time") && require('time-grunt')(grunt);
 
     try {
-        settings = grunt.file.readJSON('settings.json');
+        settings = grunt.file.readJSON(cwd + '/settings.json');
     } catch (e) {
         grunt.fatal("Can't read settings.json, use settings.json.example to create settings.json");
     }
@@ -37,6 +38,7 @@ module.exports = function(grunt) {
 
     // This task for developers
     grunt.registerTask('setup', 'Checkout feature branches and setup FAF.', [
+        "change-working-directory",
         "checkout-full",
         "init"
     ]);
@@ -240,6 +242,10 @@ module.exports = function(grunt) {
         } else {
             grunt.config.set("shell", shell_config);
         }
+    });
+
+    grunt.registerTask('change-working-directory', 'Change working directory for command line tool', function(){
+        grunt.file.setBase(cwd);
     });
 
 
