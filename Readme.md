@@ -168,3 +168,23 @@ checkin-settings         11ms  ■■■■■■■■■■■■■■■■�
 Total 75ms
 
 ```
+
+### command line support
+
+faf-tool supports running it's commands from a command line
+
+- set up
+    - check out faf-tool repo
+    - install faf-tool as a global npm package.
+
+    - ```
+        cd <faf-tool>
+        npm install . faf-tool
+    ```
+
+- usage
+    - create settings.json in <project> folder where you want to setup FAF branches
+    - ```
+        cd <project>
+        ./faf-tool setup
+    ```
