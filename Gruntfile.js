@@ -1,11 +1,14 @@
 module.exports = function(grunt) {
     var settings,
-        async = require("async");
+        async = require("async"),
+        cwd = grunt.option("cwd") || ".";
 
     require('load-grunt-tasks')(grunt);
     !grunt.option("no-time") && require('time-grunt')(grunt);
 
-    grunt.file.setBase(grunt.option("cwd") || ".");
+    grunt.file.copy("settings.json.example", cwd + "/settings.json.example");
+
+    grunt.file.setBase(cwd);
 
     try {
         settings = grunt.file.readJSON('settings.json');
@@ -43,9 +46,9 @@ module.exports = function(grunt) {
         "init"
     ]);
 
-    grunt.registerTask('default', 'Default task.', [
-
-    ]);
+    grunt.registerTask('default', 'Default task.', function() {
+        writeHelp();
+    });
 
 
     // Private tasks
@@ -360,5 +363,25 @@ module.exports = function(grunt) {
             grunt.log.writeln(result);
             callback(error, result);
         });
+    }
+
+    function tab(n) {
+        return new Array((n || 1) * 4).join(" ");
+    }
+    function writeHelp() {
+        grunt.log.writeln("Full description: https://github.com/Jaspersoft/faf-tool");
+        grunt.log.writeln("Usage:");
+        grunt.log.writeln(tab() + "1. Rename settings.json.example in current folder to settings.json.");
+        grunt.log.writeln(tab() + "2. Update settings.json with your requirements.");
+        grunt.log.writeln(tab() + "3. run task \"faf-tool <task>\"");
+        grunt.log.writeln(tab(2) + "\"create-feature\" - do new feature routine work:");
+        grunt.log.writeln(tab(3) + "creates faf branches");
+        grunt.log.writeln(tab(3) + "resolve bower dependencies and commit it");
+        grunt.log.writeln(tab(3) + "update overlay versions in JRS");
+        grunt.log.writeln(tab(2) + "\"setup\":");
+        grunt.log.writeln(tab(3) + "checkout FAF modules and JRS");
+        grunt.log.writeln(tab(3) + "install node modules, initialize node modules and grunt for each module, specified in settings.json");
+        grunt.log.writeln(tab(2) + "\"init\":");
+        grunt.log.writeln(tab(3) + "install node modules, initialize node modules and grunt for each module, specified in settings.json");
     }
 };

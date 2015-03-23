@@ -1,16 +1,22 @@
 # FAF setup tool
 
 - Create feature branches and do preparation routine work.
-    - create feature branches
-    - checkout bower.json, package.json
-    - update bower dependencies and overlay versions
-    - commit changes (faf modules only)
+    - creates feature branches
+    - checkouts bower.json, package.json
+    - updates bower dependencies and overlay versions
+    - commits changes (faf modules only)
 - Checkout and setup all FAF and JRS feature repositories by one command
-    - checkout full repositories for selected modules
-    - run commands:
+    - checkouts full repositories for selected modules
+    - runs commands:
         - npm install
         - npm prune
         - grunt init
+- Initialize FAF modules
+    - runs commands:
+        - npm install
+        - npm prune
+        - grunt init
+
 
 - Options
     - `--dry-run=true`
@@ -23,26 +29,30 @@
 
 ```
 git clone https://github.com/Jaspersoft/faf-tool.git
-npm install
+npm install -g .
 
-// edit settings.json now !!!
+// go to folder where you want to setup FAF branches
+// create settings.json here or
+// run 'faf-tool' without arguments. It will create settings.json.example here. Rename it to settings.json
+
+// update settings.json
 
 // At first try to --dry-run !!!
 
 // create new feature branches and setup it
-grunt create-feature
+faf-tool create-feature
 
 // or just checkout necessary branches and init it
-grunt setup
+faf-tool setup
 ```
 
 ### Commands
 
 command options can be used in these ways:
 ```
-grunt create-feature --dry-run
-grunt create-feature --dry-run=true --no-time
-grunt create-feature --verbose=true --dry-run=true
+faf-tool create-feature --dry-run
+faf-tool create-feature --dry-run=true --no-time
+faf-tool create-feature --verbose=true --dry-run=true
 ```
 
 #### create-feature
@@ -99,7 +109,7 @@ Remove unnecessary modules, set branch names for faf, ce and pro
 ### sample output
 
 ```
-λ grunt create-feature
+λ faf-tool create-feature
 Running "create-branches" task
 
 ...
@@ -116,7 +126,7 @@ Total 55.7s
 #### `--dry-run` option:
 
 ```
-λ grunt create-feature --dry-run
+λ faf-tool create-feature --dry-run
 Running "create-branches" task
 Create svn branch for bi-control
 Create svn branch for bi-dashboard

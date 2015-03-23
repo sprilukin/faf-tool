@@ -23,7 +23,7 @@ grunt.file.setBase(asset('.'));
 if (grunt.cli.tasks.length === 0) {
     // No task was specified on the command line, so run the init task
     // without any arguments.
-    grunt.cli.tasks = ['setup'];
+    grunt.cli.tasks = ['default'];
 }
 
 // Start grunt.
