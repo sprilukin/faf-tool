@@ -1,13 +1,14 @@
 module.exports = function(grunt) {
     var settings,
-        async = require("async"),
-        cwd = grunt.option("cwd") || ".";
+        async = require("async");
 
     require('load-grunt-tasks')(grunt);
     !grunt.option("no-time") && require('time-grunt')(grunt);
 
+    grunt.file.setBase(grunt.option("cwd") || ".");
+
     try {
-        settings = grunt.file.readJSON(cwd + '/settings.json');
+        settings = grunt.file.readJSON('settings.json');
     } catch (e) {
         grunt.fatal("Can't read settings.json, use settings.json.example to create settings.json");
     }
@@ -38,7 +39,6 @@ module.exports = function(grunt) {
 
     // This task for developers
     grunt.registerTask('setup', 'Checkout feature branches and setup FAF.', [
-        "change-working-directory",
         "checkout-full",
         "init"
     ]);
@@ -243,11 +243,6 @@ module.exports = function(grunt) {
             grunt.config.set("shell", shell_config);
         }
     });
-
-    grunt.registerTask('change-working-directory', 'Change working directory for command line tool', function(){
-        grunt.file.setBase(cwd);
-    });
-
 
     function getSettingsBranchPath(module) {
         if (module === "jasperserver") {
