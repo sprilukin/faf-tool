@@ -13,7 +13,8 @@ module.exports = function(grunt) {
     try {
         settings = grunt.file.readJSON('settings.json');
     } catch (e) {
-        grunt.fatal("Can't read settings.json, use settings.json.example to create settings.json");
+        writeHelp();
+        grunt.fatal(e.message + "\r\nUse settings.json.example to create settings.json");
     }
 
     var username = grunt.option("username") || settings["username"];
@@ -383,5 +384,6 @@ module.exports = function(grunt) {
         grunt.log.writeln(tab(3) + "install node modules, initialize node modules and grunt for each module, specified in settings.json");
         grunt.log.writeln(tab(2) + "\"init\":");
         grunt.log.writeln(tab(3) + "install node modules, initialize node modules and grunt for each module, specified in settings.json");
+        grunt.log.writeln();
     }
 };
