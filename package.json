@@ -20,5 +20,16 @@
     "time-grunt": "~0.3.2",
     "underscore": "~1.6.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jaspersoft/faf-tool/issues"
+  },
+  "homepage": "https://github.com/Jaspersoft/faf-tool",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jrs",
+    "jaspersoft"
+  ]
 }
