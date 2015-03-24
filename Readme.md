@@ -78,8 +78,8 @@ Checking out faf modules and jrs if specified
 Remove unnecessary modules, set branch names for faf, ce and pro
 ```
 {
-    // by default it uses "svn+ssh://" protocol but you can specify protocol in this property like "https://svnserver.jaspersoft.com"
-  "svn-server": "falcon.jaspersoft.com",
+    // by default it uses "https://" protocol but you can specify protocol in this property like "svn+ssh://falcon.jaspersoft.com"
+  "svn-server": "https.jaspersoft.com",
 
     // branch name parts
   "release-cycle": "<release name>", // optional parameter for features without release cycle like bugfix
