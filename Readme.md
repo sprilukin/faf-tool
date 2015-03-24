@@ -68,6 +68,11 @@ faf-tool create-feature --verbose=true --dry-run=true
 #### setup
 Checkout selected modules and init it
 
+#### init
+Initialize selected modules: npm install && npm prune && grunt init
+
+#### checkout-full
+Checking out faf modules and jrs if specified
 
 ### settings.json
 Remove unnecessary modules, set branch names for faf, ce and pro
