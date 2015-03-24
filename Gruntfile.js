@@ -384,6 +384,8 @@ module.exports = function(grunt) {
         grunt.log.writeln(tab(3) + "install node modules, initialize node modules and grunt for each module, specified in settings.json");
         grunt.log.writeln(tab(2) + "\"init\":");
         grunt.log.writeln(tab(3) + "install node modules, initialize node modules and grunt for each module, specified in settings.json");
+        grunt.log.writeln(tab(2) + "\"checkout-full\":");
+        grunt.log.writeln(tab(3) + "checkout FAF modules and JRS");
         grunt.log.writeln();
     }
 };
