@@ -25,13 +25,13 @@
     - `--username=<username>` - svn username
     - `--password=<password>` - svn password
 
-### How to use
+## How to use
 
 ```
-git clone https://github.com/Jaspersoft/faf-tool.git
-npm install -g .
+npm install -g faf-tool
 
 // go to folder where you want to setup FAF branches
+
 // create settings.json here or
 // run 'faf-tool' without arguments. It will create settings.json.example here. Rename it to settings.json
 
@@ -46,7 +46,7 @@ faf-tool create-feature
 faf-tool setup
 ```
 
-### Commands
+## Commands
 
 command options can be used in these ways:
 ```
@@ -74,7 +74,7 @@ Initialize selected modules: npm install && npm prune && grunt init
 #### checkout-full
 Checking out faf modules and jrs if specified
 
-### settings.json
+## settings.json
 Remove unnecessary modules, set branch names for faf, ce and pro
 ```
 {
@@ -111,7 +111,7 @@ Remove unnecessary modules, set branch names for faf, ce and pro
 }
 ```
 
-### sample output
+## sample output
 
 ```
 λ faf-tool create-feature
@@ -182,25 +182,4 @@ checkin-settings         11ms  ■■■■■■■■■■■■■■■■�
 
 Total 75ms
 
-```
-
-### command line support
-
-faf-tool supports running it's commands from a command line
-
-- set up
-    - check out faf-tool repo
-    - install faf-tool as a global npm package:
-
-```
-        cd <faf-tool>
-        npm install . -g
-```
-
-- usage
-    - create settings.json in <project> folder where you want to setup FAF branches
-    - use faf-tool command in <porject> folder:
-```
-        cd <project>
-        ./faf-tool setup [options]
 ```
