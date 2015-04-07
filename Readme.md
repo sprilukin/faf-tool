@@ -58,7 +58,7 @@ faf-tool create-feature --verbose=true --dry-run=true
 #### create-feature
 
 ```
-"create-branches", // create new branches from trunk for all modules specified in settings.json
+"create-branches", // create new branches from trunk for all faf modules specified in settings.json
 "checkout-settings-files", // checkout branches
 "resolve-deps", // resolve bower dependencies in bower.json
 "update-overlay-versions", // update overlay versions in jrs-ui, jrs-ui-pro and JRS poms
@@ -79,19 +79,19 @@ Remove unnecessary modules, set branch names for faf, ce and pro
 ```
 {
     // by default it uses "https://" protocol but you can specify protocol in this property like "svn+ssh://falcon.jaspersoft.com"
-  "svn-server": "https.jaspersoft.com",
+  "svn-server": "svnserver.jaspersoft.com",
 
     // branch name parts
   "release-cycle": "<release name>", // optional parameter for features without release cycle like bugfix
   "feature-name": "<feature name>",
 
-    // optional JRS branch used for checkout and update faf overlays version in jasperserver-war/pom.xml
+    // optional JRS branches names used for checkout JRS
   "jasperserver-branch": "<existing jrs ce branch name>",
   "jasperserver-pro-branch": "<existing jrs pro branch name>",
 
     // optional JRS location (if already checked out) - used to update faf overlays version in jasperserver-war/pom.xml (requires manual commit)
-  "jasperserver-path": "<path to local jrs>",
-  "jasperserver-pro-path": "<path to local jrs-pro>",
+  "jasperserver-ci-path": "<path to ci jrs>",
+  "jasperserver-pro-ci-path": "<path to ci jrs-pro>",
 
   // optional svn credentials
   "username": "username",

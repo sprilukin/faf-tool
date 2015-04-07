@@ -7,8 +7,8 @@
   "jasperserver-branch": "<existed jrs ce branch name>",
   "jasperserver-pro-branch": "<existed jrs pro branch name>",
 
-  "jasperserver-path": "<path to local jrs>",
-  "jasperserver-pro-path": "<path to local jrs-pro>",
+  "jasperserver-ci-path": "<path to ci jrs>",
+  "jasperserver-pro-ci-path": "<path to ci jrs-pro>",
 
 
   "modules": [
