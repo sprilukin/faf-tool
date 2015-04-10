@@ -16,6 +16,9 @@
         - npm install
         - npm prune
         - grunt init
+- Downmerge project
+    - runs merge from trunk command for FAF modules and JRS
+    - argument "--accept=<value>" accepts. Default "postpone".
 
 
 - Options
@@ -24,6 +27,7 @@
     - `--no-time` - hide time report
     - `--username=<username>` - svn username
     - `--password=<password>` - svn password
+    - `--accept=<value>` - argument for svn merge command, works for "downmerge" task. Default "postpone".
 
 ## How to use
 
@@ -73,6 +77,10 @@ Initialize selected modules: npm install && npm prune && grunt init
 
 #### checkout-full
 Checking out faf modules and jrs if specified
+
+#### downmerge
+Runs svn merge from trunk command for FAF modules and JRS
+Accepts "--accept=<value>" svn argument. Default "postpone".
 
 ## settings.json
 Remove unnecessary modules, set branch names for faf, ce and pro

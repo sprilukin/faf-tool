@@ -47,6 +47,31 @@ module.exports = function(grunt) {
         "init"
     ]);
 
+    grunt.registerTask('downmerge', 'Downmerge project from trunk', function() {
+        var tasks = [],
+            done = this.async();
+
+        settings["modules"].forEach(function(module) {
+            grunt.log.writeln("Downmerge module: " + module);
+            tasks.push(async.apply(downmergeModule, module));
+        });
+
+        if (settings["jasperserver-branch"]) {
+            grunt.log.writeln("Downmerge module: jasperserver");
+            tasks.push(async.apply(downmergeModule, "jasperserver"));
+        }
+        if (settings["jasperserver-pro-branch"]) {
+            grunt.log.writeln("Downmerge module: jasperserver-pro");
+            tasks.push(async.apply(downmergeModule, "jasperserver-pro"));
+        }
+
+        if (grunt.option("dry-run")) {
+            done();
+        } else {
+            async.series(tasks, done);
+        }
+    });
+
     grunt.registerTask('default', 'Default task.', function() {
         writeHelp();
     });
@@ -299,6 +324,15 @@ module.exports = function(grunt) {
         ], callback);
     }
 
+    function downmergeModule(module, callback) {
+        execSvn([
+            "merge",
+            getRepoPath(module, "trunk"),
+            module,
+            "--accept=" + (grunt.option["accept"] || "postpone")
+        ], callback);
+    }
+
     function checkoutSettingsFiles(module, callback) {
         execSvn([
             "checkout",
@@ -386,6 +420,9 @@ module.exports = function(grunt) {
         grunt.log.writeln(tab(3) + "install node modules, initialize node modules and grunt for each module, specified in settings.json");
         grunt.log.writeln(tab(2) + "\"checkout-full\":");
         grunt.log.writeln(tab(3) + "checkout FAF modules and JRS");
+        grunt.log.writeln(tab(2) + "\"downmerge\":");
+        grunt.log.writeln(tab(3) + "runs svn merge from trunk command for each FAF module, specified in settings.json and JRS if \"jasperserver-branch\" option specified");
+        grunt.log.writeln(tab(3) + "accepts one argument \"--accept=postpone\". Default \"postpone\".");
         grunt.log.writeln();
     }
 };
