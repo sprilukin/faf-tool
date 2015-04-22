@@ -17,6 +17,7 @@
         - npm prune
         - grunt init
 - Downmerge project
+    - updates modules from repos
     - runs merge from trunk command for FAF modules and JRS
     - argument "--accept=<value>" accepts. Default "postpone".
 
@@ -79,7 +80,7 @@ Initialize selected modules: npm install && npm prune && grunt init
 Checking out faf modules and jrs if specified
 
 #### downmerge
-Runs svn merge from trunk command for FAF modules and JRS
+Runs svn up and svn merge from trunk command for FAF modules and JRS
 Accepts "--accept=<value>" svn argument. Default "postpone".
 
 ## settings.json

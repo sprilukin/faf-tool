@@ -53,15 +53,18 @@ module.exports = function(grunt) {
 
         settings["modules"].forEach(function(module) {
             grunt.log.writeln("Downmerge module: " + module);
+            tasks.push(async.apply(svnUpModule, module));
             tasks.push(async.apply(downmergeModule, module));
         });
 
         if (settings["jasperserver-branch"]) {
             grunt.log.writeln("Downmerge module: jasperserver");
+            tasks.push(async.apply(svnUpModule, "jasperserver"));
             tasks.push(async.apply(downmergeModule, "jasperserver"));
         }
         if (settings["jasperserver-pro-branch"]) {
             grunt.log.writeln("Downmerge module: jasperserver-pro");
+            tasks.push(async.apply(svnUpModule, "jasperserver-pro"));
             tasks.push(async.apply(downmergeModule, "jasperserver-pro"));
         }
 
@@ -330,6 +333,13 @@ module.exports = function(grunt) {
             getRepoPath(module, "trunk"),
             module,
             "--accept=" + (grunt.option["accept"] || "postpone")
+        ], callback);
+    }
+
+    function svnUpModule(module, callback) {
+        execSvn([
+            "up",
+            module
         ], callback);
     }
 
