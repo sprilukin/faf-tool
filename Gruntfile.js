@@ -53,23 +53,22 @@ module.exports = function(grunt) {
 
         settings["modules"].forEach(function(module) {
             grunt.log.writeln("Downmerge module: " + module);
-            tasks.push(async.apply(svnUpModule, module));
-            tasks.push(async.apply(downmergeModule, module));
+            tasks.push(async.apply(svnUpModuleAndDownmerge, module));
         });
 
         if (settings["jasperserver-branch"]) {
             grunt.log.writeln("Downmerge module: jasperserver");
-            tasks.push(async.apply(svnUpModule, "jasperserver"));
-            tasks.push(async.apply(downmergeModule, "jasperserver"));
+            tasks.push(async.apply(svnUpModuleAndDownmerge, "jasperserver"));
         }
         if (settings["jasperserver-pro-branch"]) {
             grunt.log.writeln("Downmerge module: jasperserver-pro");
-            tasks.push(async.apply(svnUpModule, "jasperserver-pro"));
-            tasks.push(async.apply(downmergeModule, "jasperserver-pro"));
+            tasks.push(async.apply(svnUpModuleAndDownmerge, "jasperserver-pro"));
         }
 
         if (grunt.option("dry-run")) {
             done();
+        } else if (grunt.option("parallel")) {
+            async.parallel(tasks, done);
         } else {
             async.series(tasks, done);
         }
@@ -341,6 +340,12 @@ module.exports = function(grunt) {
             "up",
             module
         ], callback);
+    }
+
+    function svnUpModuleAndDownmerge(module, callback) {
+        svnUpModule(module, function() {
+            downmergeModule(module, callback)
+        });
     }
 
     function checkoutSettingsFiles(module, callback) {
